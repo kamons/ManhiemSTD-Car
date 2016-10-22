@@ -19,8 +19,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Bind Widget
-        signUpButton = (Button) findViewById(R.id.button);
-        singInButton = (Button) findViewById(R.id.button2);
+        signUpButton = (Button) findViewById(R.id.button2);
+        singInButton = (Button) findViewById(R.id.button);
 
         //signUp Controller
         signUpButton.setOnClickListener(new View.OnClickListener() {
