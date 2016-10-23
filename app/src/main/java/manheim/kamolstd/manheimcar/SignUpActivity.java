@@ -1,9 +1,11 @@
 package manheim.kamolstd.manheimcar;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +20,9 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText nameEditText, usEditText, passEditText;
     private ImageView imageView;
     private Button button;
-    private String nameString,userString,passwordString, imageString;
+    private String nameString,userString,passwordString, imageString,
+            imagePathString, imageNameString;
+
     private Uri uri;
 
 
@@ -96,10 +100,40 @@ public class SignUpActivity extends AppCompatActivity {
                 e.printStackTrace();
             } //try
 
+            //Find Path and Name
+            imagePathString = myFindPath(uri);
+            Log.d("23octV1", "imagePathString ==> " + imagePathString);
+
+            imageNameString = imagePathString.substring(imagePathString.lastIndexOf("/"));
+            Log.d("23octV1", "imageNameString ==> " + imageNameString);
+
+
 
         } //if
 
     } //on ActivityResult
+
+    private String myFindPath(Uri uri) {
+        String result = null;
+
+        String[] strings = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, strings, null, null, null);
+
+        if (cursor !=null) {
+
+            cursor.moveToFirst();
+            int i = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            result = cursor.getString(i);
+
+        } else {
+            result = uri.getPath();
+
+        }
+
+        return result;
+
+
+    }
 
 
 } // Main Class
