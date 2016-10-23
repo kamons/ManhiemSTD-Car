@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
     // Explicit  การประกาสศ ตัวแปล
     private Button singInButton, signUpButton;
     private EditText userEditText, passwordEditText;
+    private String userString, passwordString;
+
 
 
 
@@ -37,6 +39,26 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
               startActivity(new Intent(MainActivity.this, SignUpActivity.class));}
         });
+
+        //SignIn Controller
+        singInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                userString = userEditText.getText().toString().trim();
+                passwordString = passwordEditText.getText().toString().trim();
+
+                //Check Space
+                if (userString.equals("") ||passwordString.equals("")) {
+                    MyAlert myAlert = new MyAlert(MainActivity.this,
+                            R.drawable.nobita48, "Have Space", "Please Fill All Every Blank");
+                    myAlert.myDialog();
+
+                }
+
+            }
+        });
+
     } // Main Method
 
 } // Main Class นี่คือ คลาสหลัก
