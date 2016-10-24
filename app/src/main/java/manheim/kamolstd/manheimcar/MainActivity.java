@@ -3,7 +3,7 @@ package manheim.kamolstd.manheimcar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.security.keystore.UserNotAuthenticatedException;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +14,9 @@ import android.widget.EditText;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -83,7 +86,10 @@ public class MainActivity extends AppCompatActivity {
 
         //Explicit
         private Context context;
-        private String titleString, messageString;
+        private String titleString, messageString, truePasswordString;
+        private String[] nameStrings, imageStrings, latStrings, lngStrings;
+        private boolean aBoolean = true;
+
 
 
 
@@ -114,6 +120,45 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.d("24octV1", "JSON==>" + s);
+
+            try {
+                JSONArray jsonArray = new JSONArray(s);
+
+                nameStrings = new String[jsonArray.length()];
+                imageStrings = new String[jsonArray.length()];
+                latStrings = new String[jsonArray.length()];
+                lngStrings = new String[jsonArray.length()];
+
+
+                for (int i=0; i<jsonArray.length();i++) {
+
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    // Check User
+                    if (userString.equals(jsonObject.get("User"))) {
+
+                        aBoolean = false;
+                        truePasswordString = jsonObject.getString("Password");
+
+                    } //if
+
+                    //Setup Array
+                    nameStrings[i] = jsonObject.getString("Name");
+                    imageStrings[i] = jsonObject.getString("Image");
+                    latStrings[i] = jsonObject.getString("Lat");
+                    lngStrings[i] = jsonObject.getString("Lng");
+
+                } // for
+
+                if (aBoolean) {
+
+                    MyAlert myAlert = new MyAlert(context, R.drawable.kon48, titleString, messageString);
+                    myAlert.myDialog();
+
+                }
+
+            } catch (Exception e) {
+                Log.d("24octV2", "e onPost==>" + e.toString());
+            }
 
             } //OnPost
 
