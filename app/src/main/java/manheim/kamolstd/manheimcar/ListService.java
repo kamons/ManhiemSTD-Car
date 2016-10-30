@@ -16,7 +16,7 @@ import android.widget.ListView;
 public class ListService extends AppCompatActivity {
 
     //Explicit
-    private listView;
+    private ListView listView;
     private String [] nameStrings, latStrings, lngStrings, imageStrings;
     private LocationManager locationManager;
     private Criteria criteria;
@@ -77,6 +77,41 @@ public class ListService extends AppCompatActivity {
         criteria.setBearingRequired(false);
 
     } //Main Method
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        locationManager.removeUpdates(locationListener);
+        latADouble = 13.719687;
+        lngADouble = 100.703694;  // Location of Manheim Office
+
+        //Find by Network
+        Location netWorkLocation = myFindLocation(LocationManager.NETWORK_PROVIDER);
+        if (netWorkLocation != null) {
+            latADouble = netWorkLocation.getLatitude();
+            lngADouble = netWorkLocation.getLongitude();
+
+        }
+        // Find by GPS Card
+        Location gpsLocation = myFindLocation(LocationManager.GPS_PROVIDER);
+        if (gpsLocation != null) {
+            latADouble = gpsLocation.getLatitude();
+            lngADouble = gpsLocation.getLongitude();
+        }
+
+        Log.d("30octV1", "lat ==> " + latADouble);
+        Log.d("30octV1", "lng ==> " + lngADouble);
+
+
+    }  // onResume
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        locationManager.removeUpdates(locationListener);
+
+    }
 
     public Location myFindLocation(String strProvider) {
 
