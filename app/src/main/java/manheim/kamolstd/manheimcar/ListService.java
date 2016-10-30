@@ -70,7 +70,7 @@ public class ListService extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-             //check Lat, Lng ===> double
+                //check Lat, Lng ===> double
                 boolean bolLat = true;
                 boolean bolLng = true;
 
@@ -94,6 +94,22 @@ public class ListService extends AppCompatActivity {
                 Log.d("30octV2", "bolLng ==> " + bolLng);
 
 
+                if (bolLat && bolLng) {
+                    Intent intent = new Intent(ListService.this, DetailActivity.class);
+
+                    intent.putExtra("Name", nameStrings[i]);
+                    intent.putExtra("Lat", latStrings[i]);
+                    intent.putExtra("Lng", lngStrings[i]);
+                    startActivity(intent);
+
+                } else {
+                    MyAlert myAlert = new MyAlert(ListService.this,
+                            R.drawable.bird48, "No Location",
+                            "No Lat/Lng on This Person");
+                    myAlert.myDialog();
+                }
+
+                // onItemClick
             } // onItemClick
         });
 
